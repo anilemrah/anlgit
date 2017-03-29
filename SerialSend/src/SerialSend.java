@@ -19,13 +19,18 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JToggleButton;
 
-public class SandR {
+//Serial Message Sender
+//I am using this JAVA program to send messages to my Arduino
+//board to control it.
+//Anil Emrah
+
+public class SerialSend {
 
 	private JFrame frmSerialteller;
 	private JButton btnSend;
 	private JTextField textSending;
 	private JTextField textConnection;
-	private static SerialPort serialPort = new SerialPort("COM3");
+	private static SerialPort serialPort = new SerialPort("COM3"); //Default COM3 selected, it needs a review 
 	/**
 	 * Launch the application.
 	 */
@@ -33,7 +38,7 @@ public class SandR {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SandR window = new SandR();
+					SerialSend window = new SerialSend();
 					window.frmSerialteller.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,22 +51,23 @@ public class SandR {
 	 * Create the application.
 	 */
 	
-	public SandR() {
-		String[] portNames = SerialPortList.getPortNames();
-		SerialPort serialPort = new SerialPort("COM3");
+	public SerialSend() {
+		String[] portNames = SerialPortList.getPortNames(); //Getting available ports and putting them to portNames[]
 		
 		frmSerialteller = new JFrame();
-		frmSerialteller.setIconImage(Toolkit.getDefaultToolkit().getImage("C:/Users/ANL/workspace/SendAndReceive/Arrows.svg.png"));
-		frmSerialteller.setTitle("SerialTeller");
+		frmSerialteller.setIconImage(Toolkit.getDefaultToolkit().getImage("C:/Users/ANL/Documents/anlgit/SerialSend/icon.png")); //Icon setted
+		frmSerialteller.setTitle("SerialTeller");//Title setted
 		frmSerialteller.setBounds(100, 100, 316, 421);
 		frmSerialteller.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSerialteller.getContentPane().setLayout(null);
-		
-		JToggleButton btnLED2 = new JToggleButton("LED2");
-		btnLED2.addActionListener(new ActionListener() {
+		//Button LED2 starts here
+		JToggleButton btnLED2 = new JToggleButton("LED2"); //LED2 Toggle Button, When selected, LED2 on Arduino will be ON / deselected it will be OFF
+		btnLED2.addActionListener(new ActionListener() {   //LED2 Action Listener is here
 			   public void actionPerformed(ActionEvent e) {
 				   JToggleButton btnLED2 = (JToggleButton)e.getSource();
 				   if (btnLED2.isSelected()) {
+					   //if Button LED2 selected send "c" and inform us
+					   //if unselected send "d" and inform us
 			    	  try {
 							serialPort.writeString("c");
 							textConnection.setText("LED2 Command Successful");
@@ -84,12 +90,15 @@ public class SandR {
 			});
 		btnLED2.setBounds(180, 276, 100, 50);
 		frmSerialteller.getContentPane().add(btnLED2);
-		
-		JToggleButton btnLED1 = new JToggleButton("LED1");
-		btnLED1.addActionListener(new ActionListener() {
+		//Button LED2 finished here
+		//Button LED1 starts here
+		JToggleButton btnLED1 = new JToggleButton("LED1"); //LED2 Toggle Button, When selected, LED2 on Arduino will be ON / deselected it will be OFF
+		btnLED1.addActionListener(new ActionListener() {   //LED2 Action Listener is here
 		   public void actionPerformed(ActionEvent e) {
 			   JToggleButton btnLED2 = (JToggleButton)e.getSource();
 			   if (btnLED2.isSelected()) {
+				   //if Button LED2 selected send "c" and inform us
+				   //if unselected send "d" and inform us
 		    	  try {
 						serialPort.writeString("a");
 						textConnection.setText("LED1 Command Successful");
@@ -112,7 +121,11 @@ public class SandR {
 		});
 		btnLED1.setBounds(30, 276, 100, 50);
 		frmSerialteller.getContentPane().add(btnLED1);
-		
+		//Button LED1 finished here
+		//textConnection starts here
+		//TextField for information, it shows us
+		//if there is an error or everything
+		//goes well
 		textConnection = new JTextField();
 		textConnection.setText("Situation Checker");
 		textConnection.setHorizontalAlignment(SwingConstants.CENTER);
@@ -122,13 +135,20 @@ public class SandR {
 		textConnection.setBounds(30, 127, 250, 20);
 		frmSerialteller.getContentPane().add(textConnection);
 		textConnection.setColumns(10);
-		
+		//textConnection finished here
+		//ComboBox starts here
+		//ComboBox shows us available ports
+		//If there is not any available port
+		//It shows nothing
 		JComboBox comboBox = new JComboBox(portNames);
 		comboBox.setBackground(Color.GRAY);
 		comboBox.setEditable(true);
 		comboBox.setBounds(109, 50, 89, 32);
 		frmSerialteller.getContentPane().add(comboBox);
-		
+		//ComboBox finished here
+		//btnConnect starts here
+		//This button is trying to open port with what we select
+		//And it shows us if connection is successful or not
 		JButton btnConnect = new JButton("Connect");
 		btnConnect.setBackground(new Color(255, 255, 255));
 		btnConnect.addActionListener(new ActionListener() {
@@ -156,7 +176,10 @@ public class SandR {
 		});
 		btnConnect.setBounds(109, 93, 89, 23);
 		frmSerialteller.getContentPane().add(btnConnect);
-		
+		//btnConnect finished here
+		//btnSearch starts here
+		//This is searching for available ports
+		//and putting them to portNames[] and shows in combobox
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setBackground(new Color(255, 255, 255));
 		btnSearch.addActionListener(new ActionListener() {
@@ -180,7 +203,10 @@ public class SandR {
 		});
 		btnSearch.setBounds(109, 11, 89, 23);
 		frmSerialteller.getContentPane().add(btnSearch);
-		
+		//btnSearch finished here
+		//btnSend starts here
+		//It is sending what you wrote to textSending TextField
+		//And informs us if we could send it or not
 		btnSend = new JButton("Send");
 		btnSend.setBackground(new Color(255, 255, 255));
 		btnSend.addActionListener(new ActionListener() {
@@ -198,7 +224,10 @@ public class SandR {
 		});
 		btnSend.setBounds(109, 204, 89, 23);
 		frmSerialteller.getContentPane().add(btnSend);
-		
+		//btnSend finished here
+		//textSending starts here
+		//It is a textField which allows us to write our message
+		//and send via SerialCommunication with Send Button
 		textSending = new JTextField();
 		textSending.setToolTipText("");
 		textSending.setHorizontalAlignment(SwingConstants.CENTER);
@@ -209,14 +238,16 @@ public class SandR {
 		textSending.setBounds(30, 173, 250, 20);
 		frmSerialteller.getContentPane().add(textSending);
 		textSending.setColumns(10);
-		
+		//textSending finished here
+		//Label starts here
+		//It is an easy way to set background image
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:/Users/ANL/workspace/SendAndReceive/back.png"));
+		lblNewLabel.setIcon(new ImageIcon("C:/Users/ANL/Documents/anlgit/SerialSend/back.png"));
 		lblNewLabel.setBounds(0, 0, 300, 382);
 		frmSerialteller.getContentPane().add(lblNewLabel);
 		frmSerialteller.getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblNewLabel, textSending, btnSearch, btnSend}));
-		
-		// getting serial ports list into the array
+		//Label finished here
+		//Getting serial ports list into the array
 		for (int i = 0; i < portNames.length; i++){
 		    System.out.println(portNames[i]);
 	}
